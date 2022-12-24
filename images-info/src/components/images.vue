@@ -1,25 +1,29 @@
 <script>
-import * as exifr from "exifr"
+
 export default {
     data(){return{
         click_src:null,
         img_state:"showOff",
         boy_en:"",
         info_data:false,
-        img_dizi:["../src/assets/hilal.jpg","../src/assets/mask.jpeg","../src/assets/mask2.jpeg","../src/assets/resim.JPG"]
+        img_dizi:[
+       
+        "../src/assets/mask.jpeg",
+        "../src/assets/mask2.jpeg",
+        ]
     }},
     
     created(){
         
         this.click_src=""
     },
-   components:{exifr},
+ 
     methods:{
         info_click(nesne){
             
             this.img_state="showOn"
             this.click_src=this.img_dizi[nesne.target.id]
-            this.img_info_get(nesne.target.id)
+            
 
 
                         //tıklanan resisim width  ve height degerleri çekiliyor
@@ -36,53 +40,8 @@ export default {
             ekle.innerHTML=""
             this.boy_en=null
         },
-       async img_info_get(nesnem){
+    
         
-            let img1 = document.getElementById(nesnem)
-
-           
-            let exd=exifr.parse(img1,true)
-            .then(output =>{
-                //output.DateTimeOriginal.getUTCFullYear()
-                //output.Make  model bilgisi
-                //output.Model  marka bilgisi
-                //https://www.npmjs.com/package/exifr#examples
-               
-        //  console.log('Camera:', output.Make, output.Model)
-        const ul=document.createElement("div")
-        const ekle=document.getElementById("info-data")
-        ul.classList.add("inf-ul")
-     
-
-      
-        //kontrol et onceki verileri sil
-       
-            for (const key in output) {
-                    if (Object.hasOwnProperty.call(output, key)) {
-                        const element = output[key];
-                        //obje degilse verileri yazdırıyor
-                        if(typeof element != "object"){
-                            
-                        const li=document.createElement("p")
-                        li.textContent=element
-                        ul.appendChild(li)
-                         }
-                       
-                        
-                    }
-                }
-
-                    ekle.appendChild(ul)
-  
-
-              }    
-            )
-         
-       
-           
-            
-
-        }    
             
             
     }
@@ -91,7 +50,9 @@ export default {
 </script>
 <template>
     <div class="contain d-flex d-flex-center d-flex-col">
-        <nav>
+        
+        <div class="contain-upload d-flex ">
+            <nav>
         <ul>
             <li>Vector</li>
             <li>Illustrations</li>
@@ -99,11 +60,11 @@ export default {
             <li>Icons</li>
         </ul>
         </nav>
-        <div class="contain-upload d-flex ">
             <div class="contain-upload-item">
                 <input type="text" class="contain-upload-input" placeholder="Search">
                 <button class="contain-upload-btn">Upload</button></div>
         </div>
+        <hr class="contain-upload-br"/>
         <div class="contain-img" >
        
             <img :src="img_dizi[index]" alt="" @click="info_click($event)" v-for="(item,index) in 30" :id="index">
@@ -200,9 +161,8 @@ export default {
 nav{
     width: 100%;
     display: flex;
+    align-items: center;
     
-    justify-content: flex-end;
-    margin-bottom: 3rem;
 }
 li:hover{
     cursor: pointer;
@@ -237,17 +197,25 @@ li:hover{
    
    
 }
+.contain-upload-br{
+    content: "";
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: #334043;
+}
 .contain-upload{
     width: 100%;
    margin-bottom: 3rem;
     align-items: center;
     justify-content: center;
 }
-.contain-upload-item{width: 100%; align-items: center; display: flex;justify-content: space-between;}
+.contain-upload-item{width: 100%; align-items: center;display: flex;
+    justify-content: end;}
 .contain-upload-input{
     border: 0px;
     border-bottom: 1px solid #334043;
-    padding-left: 1rem;
+    
 }
 .contain-upload-input:focus{
     
@@ -264,6 +232,7 @@ li:hover{
     border: 0px;
     border-radius: 3px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    margin-left: 20px;
 }
 .contain-upload-btn:hover{
     cursor: pointer;
